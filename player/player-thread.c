@@ -56,6 +56,10 @@ void PL_disp_channel_VU(uint8_t row, uint8_t left_level, uint8_t right_level)
 
  }
 
+void PL_matrix_analyser_display(float *fft, uint8_t mode, uint8_t G_matrix_analyser_color_scheme)
+ {
+  printf("FFT result: %f, %f \n",fft[1],fft[2]);
+ }
 
 void PL_player_display_thread(void)
  {
@@ -65,6 +69,8 @@ void PL_player_display_thread(void)
    DWORD channel_level;
    uint16_t left_level;
    uint16_t right_level;
+   float fft[128];
+   float fft_stereo[256];
 
    PL_debug("PL_player_display_thread: starting");
 
@@ -82,6 +88,24 @@ void PL_player_display_thread(void)
         G_kill_vu = 0; // does not do anything - implemented for future use
         G_vu_active = 0;
        }
+
+
+     /* matrix analyser test trigger */
+     #define MATRIX_ANALYSER_MODE_64_HOLD 1
+     #define MATRIX_ANALYSER_COLOR_01 1
+     #define MATRIX_ANALYSER_ON 1
+     #define MATRIX_ANALYSER_OFF 2
+
+     uint8_t G_matrix_analyser_mode = MATRIX_ANALYSER_MODE_64_HOLD;
+     uint8_t G_matrix_analyser_state = MATRIX_ANALYSER_ON;
+     uint8_t G_matrix_analyser_color_scheme = MATRIX_ANALYSER_COLOR_01;
+
+     if((G_matrix_analyser_state == MATRIX_ANALYSER_ON) && (G_player_mode == PLAYER_STREAM))
+      {
+       BASS_ChannelGetData(G_stream_chan, fft, BASS_DATA_FFT256);
+       PL_matrix_analyser_display(fft,G_matrix_analyser_mode,G_matrix_analyser_color_scheme);
+       PL_debug("PL_player_display_thread: got FFT values for matrix-analyser.");
+      }
 
      if((G_display_mode_upper_row ==  DISPLAY_MODE_PLAYER_META) && (G_player_mode == PLAYER_STREAM))
        {
