@@ -61,6 +61,7 @@ main(int argc, char **argv)
   G_iris_tasks[TASK_TTS] = PL_start_task(TASK_TTS, PL_TTS_thread, NULL, SCHED_BATCH, 0);
   G_iris_tasks[TASK_WIFI_INDICATOR] = PL_start_task(TASK_WIFI_INDICATOR, PL_wifi_signal_thread, NULL, SCHED_BATCH, 0);
   G_iris_tasks[TASK_BT_INDICATOR] = PL_start_task(TASK_BT_INDICATOR, PL_bt_indicator, NULL, SCHED_BATCH, 0);
+  G_iris_tasks[TASK_MATRIX] = PL_start_task(TASK_MATRIX, PL_matrix_analyser_thread, NULL, SCHED_RR, 96);
 
   if(G_config.www_access)
    G_iris_tasks[TASK_WEBSRV] = PL_start_task(TASK_WEBSRV, PL_websrv_thread, NULL, SCHED_BATCH, 0);

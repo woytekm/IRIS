@@ -30,7 +30,7 @@ void PL_init(void)
   G_config.tell_time_start_at = 7;    // say hour even when turned off, start at this hour
   G_config.tell_time_stop_at = 0;      // say hour even when turned off, stop at this hour
 
-  G_display_mode_upper_row = DISPLAY_MODE_PLAYER_META;
+  G_display_mode_upper_row = DISPLAY_MODE_PLAYER_VU;
   G_display_mode_lower_row = DISPLAY_MODE_CLOCK;
 
   G_scroll_meta_active = 0;
